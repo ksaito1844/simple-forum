@@ -23,7 +23,7 @@ const NewBlogForm = ({ user }) => {
   }, [blogs])
 
   const handleSubmit = async (event) => {
-    const date = moment().format("dddd, MMMM Do YYYY, h:mm:ss a")
+    const date = moment().format("YYYY-MM-DD HH:mm:ss")
     event.preventDefault()
     const newBlogObject = {
       title: newBlog.title,

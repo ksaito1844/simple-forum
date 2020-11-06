@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import { connect, useDispatch } from 'react-redux'
-import { addComment, deleteBlog, likeBlog } from '../reducers/blogReducer'
 import { Link, useHistory } from 'react-router-dom'
+import moment from 'moment'
+import { addComment, deleteBlog, likeBlog } from '../reducers/blogReducer'
 import { changeNotification } from '../reducers/notificationReducer'
 
 const BlogView = ({ blog, user }) => {
   const [comment, setComment] = useState('')
   const dispatch = useDispatch()
   let history = useHistory()
+
+  const howLongAgo = moment(blog.createdAt, "YYYY-MM-DD HH:mm:ss").fromNow();
 
   const like = () => {
     const likedBlog = {
@@ -48,7 +51,7 @@ const BlogView = ({ blog, user }) => {
 
   }
 
-  console.log(blog)
+
 
   return (
     <div>
@@ -58,7 +61,7 @@ const BlogView = ({ blog, user }) => {
       <p>Likes: {blog.likes}
         <button onClick={like}>like</button>
       </p>
-      <p>added by <Link to={`/users/${blog.user.id}`}>{blog.author}</Link> at {blog?.createdAt}</p>
+      <p>added by <Link to={`/users/${blog.user.id}`}>{blog.author}</Link> at {howLongAgo}</p>
       <button onClick={remove}>delete</button>
 
       <hr/>

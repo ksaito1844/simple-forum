@@ -54,7 +54,7 @@ const useClasses = makeStyles(theme => ({
 }))
 
 export const Blog = ({ blog }) => {
-
+  const howLongAgo = moment(blog.createdAt, "YYYY-MM-DD HH:mm:ss").fromNow();
   const classes = useClasses()
 
   return (
@@ -64,7 +64,7 @@ export const Blog = ({ blog }) => {
       <Box className={classes.listItemContainer}>
         <Typography variant='body2'
         >
-          posted by {blog.author}
+          posted by {blog.author} {howLongAgo}
         </Typography>
 
         <Typography variant='h5'>
