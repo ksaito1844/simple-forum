@@ -7,7 +7,6 @@ import { makeStyles } from '@material-ui/styles'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 
-
 const reUsableStyle = {
   border: '1px solid #BDC3C7',
   '&:hover': {
@@ -54,7 +53,7 @@ const useClasses = makeStyles(theme => ({
 }))
 
 export const Blog = ({ blog }) => {
-  const howLongAgo = moment(blog.createdAt, "YYYY-MM-DD HH:mm:ss").fromNow();
+
   const classes = useClasses()
 
   return (
@@ -64,7 +63,7 @@ export const Blog = ({ blog }) => {
       <Box className={classes.listItemContainer}>
         <Typography variant='body2'
         >
-          posted by {blog.author} {howLongAgo}
+          posted by {blog.author} {blog.createdAt}
         </Typography>
 
         <Typography variant='h5'>
@@ -78,6 +77,9 @@ export const Blog = ({ blog }) => {
 const Bloglist = ({ blogs }) => {
   const classes = useClasses()
   const history = useHistory()
+  const blogsCopy = [...blogs].sort((a, b) => {
+    return moment(b.createdAt, 'YYYY-MM-DD HH:mm:ss').diff(a.createdAt, 'YYYY-MM-DD HH:mm:ss')
+  })
 
   return (
     <div>
@@ -95,7 +97,7 @@ const Bloglist = ({ blogs }) => {
           onFocus={() => history.push('/create')}
         />
       </Box>
-      {blogs
+      {blogsCopy
         // sorts blogs by most likes
         // .sort((a, b) => {return b.likes - a.likes})
         .map(blog =>
@@ -111,9 +113,7 @@ const Bloglist = ({ blogs }) => {
 
 const mapStateToProps = (state) => {
   return {
-    blogs: state.blogs.sort((a, b) => {
-      return moment(b.createdAt, "dddd, MMMM Do YYYY, h:mm:ss a") - moment(a.createdAt, "dddd, MMMM Do YYYY, h:mm:ss a")
-    })
+    blogs: state.blogs
   }
 }
 

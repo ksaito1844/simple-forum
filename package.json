@@ -4,7 +4,8 @@
   "description": "A simple forum project",
   "main": "index.js",
   "scripts": {
-    "deploy": "cd backend && npm run build:ui && cd .. && git subtree push --prefix backend heroku master",
+    "build:deploy": "cd backend && npm run build:ui && cd .. && git subtree push --prefix backend heroku master",
+    "deploy": "git subtree push --prefix backend heroku master",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
