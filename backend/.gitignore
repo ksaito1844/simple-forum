@@ -52,6 +52,6 @@ build/Release
 
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
-front-end/cypress
-front-end/cypress/videos
-front-end/cypress/screenshots
+node_modules
+cypress/videos
+cypress/screenshots
