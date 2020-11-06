@@ -1,11 +1,12 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { Link, useHistory } from 'react-router-dom'
+import moment from 'moment'
 import Box from '@material-ui/core/Box'
 import { makeStyles } from '@material-ui/styles'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
-import {useHistory} from 'react-router-dom'
+
 
 const reUsableStyle = {
   border: '1px solid #BDC3C7',
@@ -74,10 +75,10 @@ export const Blog = ({ blog }) => {
   )
 }
 
-const Bloglist = () => {
-  const blogs = useSelector(state => state.blogs)
+const Bloglist = ({ blogs }) => {
   const classes = useClasses()
   const history = useHistory()
+
   return (
     <div>
       <Box className={classes.inputContainer}>
@@ -91,11 +92,12 @@ const Bloglist = () => {
           name='New Post'
           autoComplete="on"
           className={classes.textField}
-          onFocus={()=> history.push('/create')}
+          onFocus={() => history.push('/create')}
         />
       </Box>
       {blogs
-        .sort((a, b) => {return b.likes - a.likes})
+        // sorts blogs by most likes
+        // .sort((a, b) => {return b.likes - a.likes})
         .map(blog =>
           <Blog
             key={blog.id}
@@ -107,4 +109,12 @@ const Bloglist = () => {
   )
 }
 
-export default Bloglist
+const mapStateToProps = (state) => {
+  return {
+    blogs: state.blogs.sort((a, b) => {
+      return moment(b.createdAt, "dddd, MMMM Do YYYY, h:mm:ss a") - moment(a.createdAt, "dddd, MMMM Do YYYY, h:mm:ss a")
+    })
+  }
+}
+
+export default connect(mapStateToProps)(Bloglist)

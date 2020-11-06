@@ -4,6 +4,7 @@ import Notification from './Notification'
 import { changeNotification } from '../reducers/notificationReducer'
 import { createBlog } from '../reducers/blogReducer'
 import { useDispatch, useSelector } from 'react-redux'
+import moment from 'moment';
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
@@ -22,11 +23,13 @@ const NewBlogForm = ({ user }) => {
   }, [blogs])
 
   const handleSubmit = async (event) => {
+    const date = moment().format("dddd, MMMM Do YYYY, h:mm:ss a")
     event.preventDefault()
     const newBlogObject = {
       title: newBlog.title,
       url: newBlog.url,
-      author: user
+      author: user,
+      createdAt: date
     }
     await dispatch(createBlog(newBlogObject))
     dispatch(changeNotification(`Your new blog titled: "${newBlogObject.title}" has been added to the server!`, 3000))

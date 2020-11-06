@@ -103,7 +103,7 @@ const App = () => {
                 <RegisterForm/>
               </Route>
               <Route path="/">
-                <Bloglist blogs={blogs}/>
+                <Bloglist />
               </Route>
             </Switch>
           </div>

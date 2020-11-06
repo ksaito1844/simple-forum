@@ -20,8 +20,10 @@ blogsRouter.post('/', async (req, res) => {
         title: body.title,
         author: body.author.name,
         url: body.url,
-        user: user._id
+        user: user._id,
+        createdAt: body.createdAt
     })
+    console.log(blog)
 
     if (!blog.title || !blog.url)
         return res.status(400).json({ error: 'Bad Request'})

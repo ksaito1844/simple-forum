@@ -48,6 +48,8 @@ const BlogView = ({ blog, user }) => {
 
   }
 
+  console.log(blog)
+
   return (
     <div>
       <h1>{blog.title}</h1>
@@ -56,7 +58,7 @@ const BlogView = ({ blog, user }) => {
       <p>Likes: {blog.likes}
         <button onClick={like}>like</button>
       </p>
-      <p>added by <Link to={`/users/${blog.user.id}`}>{blog.author}</Link></p>
+      <p>added by <Link to={`/users/${blog.user.id}`}>{blog.author}</Link> at {blog?.createdAt}</p>
       <button onClick={remove}>delete</button>
 
       <hr/>
