@@ -1,117 +1,111 @@
-import React, { useEffect } from 'react'
-import blogService from './services/blogs'
-import Bloglist from './components/Bloglist'
-import Notification from './components/Notification'
-import NewBlogForm from './components/NewBlogForm'
-import { useDispatch, useSelector } from 'react-redux'
-import { initializeBlogs } from './reducers/blogReducer'
-import UsersView from './components/UsersView'
-import {
-  Switch, Route, useRouteMatch
-} from 'react-router-dom'
-import UserProfile from './components/UserProfile'
-import { initializeUsers } from './reducers/usersReducer'
-import BlogView from './components/BlogView'
-import { Container } from '@material-ui/core'
-import LoginForm from './components/LoginForm'
-import { makeStyles } from '@material-ui/core/styles'
-import NavBar from './components/NavBar'
-import RegisterForm from './components/RegisterForm'
-import { alreadyLoggedIn } from './reducers/userReducer'
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import { Container } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import blogService from './services/blogs';
+import Bloglist from './components/Blogs/Bloglist';
+import Notification from './components/Notification';
+import NewBlogForm from './components/Blogs/NewBlogForm';
+import { initializeBlogs } from './reducers/blogReducer';
+import UsersView from './components/UsersView/UsersView';
+import UserProfile from './components/UserProfile/UserProfile';
+import { initializeUsers } from './reducers/usersReducer';
+import BlogView from './components/Blogs/BlogView';
+import LoginForm from './components/LoginForm';
+import NavBar from './components/Nav/NavBar';
+import RegisterForm from './components/RegisterForm';
+import { alreadyLoggedIn } from './reducers/userReducer';
 
 const App = () => {
-  const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
-  const blogs = useSelector(state => state.blogs)
-  const users = useSelector(state => state.users)
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const blogs = useSelector((state) => state.blogs);
+  const users = useSelector((state) => state.users);
 
   useEffect(() => {
-    dispatch(initializeBlogs())
-  }, [dispatch])
+    dispatch(initializeBlogs());
+  }, [dispatch]);
 
   useEffect(() => {
-    dispatch(initializeUsers())
-  }, [dispatch])
+    dispatch(initializeUsers());
+  }, [dispatch]);
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedInAppUser')
+    const loggedUserJSON = window.localStorage.getItem('loggedInAppUser');
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
+      const user = JSON.parse(loggedUserJSON);
       // takes user's username ato find current user and log them in
-      dispatch(alreadyLoggedIn(user))
+      dispatch(alreadyLoggedIn(user));
     }
-  }, [dispatch])
+  }, [dispatch]);
 
   useEffect(() => {
     if (user) {
-      window.localStorage.setItem(
-        'loggedInAppUser', JSON.stringify(user)
-      )
-      blogService.setToken(user.token)
+      window.localStorage.setItem('loggedInAppUser', JSON.stringify(user));
+      blogService.setToken(user.token);
     }
-  }, [user])
+  }, [user]);
 
-  const matchUser = useRouteMatch('/users/:id')
+  const matchUser = useRouteMatch('/users/:id');
   const searchedUser = matchUser
-    ? users.find(user => user.id === matchUser.params.id)
-    : null
-  const matchBlog = useRouteMatch('/blogs/:id')
+    ? users.find((user) => user.id === matchUser.params.id)
+    : null;
+  const matchBlog = useRouteMatch('/blogs/:id');
   const searchedBlog = matchBlog
-    ? blogs.find(b => b.id === matchBlog.params.id)
-    : null
+    ? blogs.find((b) => b.id === matchBlog.params.id)
+    : null;
 
   const useStyles = makeStyles((theme) => ({
     marginDiv: {
-      marginTop: theme.spacing(12)
+      marginTop: theme.spacing(12),
     },
-  }))
-  const classes = useStyles()
+  }));
+  const classes = useStyles();
 
   return (
     <div>
-      <Notification user={''}/>
-      {user === null
-        ?
+      <Notification user="" />
+      {user === null ? (
         <div>
           <Switch>
             <Route path="/register">
-              <RegisterForm/>
+              <RegisterForm />
             </Route>
             <Route path="/">
-              <LoginForm/>
+              <LoginForm />
             </Route>
           </Switch>
         </div>
-        :
-        <Container maxWidth='md'>
-          <NavBar/>
+      ) : (
+        <Container maxWidth="md">
+          <NavBar />
           <div className={classes.marginDiv}>
             <Switch>
               <Route path="/blogs/:id">
-                <BlogView blog={searchedBlog}/>
+                <BlogView blog={searchedBlog} />
               </Route>
               <Route path="/users/:id">
-                <UserProfile user={searchedUser}/>
+                <UserProfile user={searchedUser} />
               </Route>
-              <Route path='/users'>
-                <UsersView/>
+              <Route path="/users">
+                <UsersView />
               </Route>
-              <Route path='/create'>
-                <NewBlogForm user={user}/>
+              <Route path="/create">
+                <NewBlogForm user={user} />
               </Route>
-              <Route path='/register'>
-                <RegisterForm/>
+              <Route path="/register">
+                <RegisterForm />
               </Route>
               <Route path="/">
                 <Bloglist />
               </Route>
             </Switch>
           </div>
-
         </Container>
-      }
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

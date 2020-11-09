@@ -13,6 +13,14 @@
     "logs:prod": "heroku logs --tail",
     "start:test": "cross-env NODE_ENV=test node index.js"
   },
+  "eslintConfig": {
+    "extends": [
+      "wesbos"
+    ],
+    "rules": {
+      "react/prop-types": 0
+    }
+  },
   "author": "Dustin Simensen",
   "license": "ISC",
   "dependencies": {
@@ -30,10 +38,20 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "jest": "^26.4.2",
-    "cypress": "^5.2.0",
+    "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.0",
+    "cypress": "^5.2.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-wesbos": "^1.0.1",
+    "eslint-plugin-html": "^6.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "esm": "^3.2.25",
+    "jest": "^26.4.2",
     "nodemon": "^2.0.4",
+    "prettier": "^2.1.1",
     "supertest": "^4.0.2"
   },
   "jest": {

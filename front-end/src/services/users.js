@@ -1,16 +1,16 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const baseUrl = '/api/users'
+const baseUrl = '/api/users';
 
 const getAll = async () => {
-  const response = await axios.get(baseUrl)
-  return response.data
-}
+  const response = await axios.get(baseUrl);
+  return response.data;
+};
 
-const register = async credentials => {
-  const response = await axios.post(baseUrl, credentials)
+const register = async (credentials) => {
+  const response = await axios.post(baseUrl, credentials);
 
-  return response.data
-}
+  return response.data;
+};
 
-export default { getAll, register }
+export default { getAll, register };

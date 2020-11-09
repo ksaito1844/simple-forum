@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
-const formStyles = makeStyles(theme => ({
+const formStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -17,7 +17,7 @@ const formStyles = makeStyles(theme => ({
   },
   button: {
     margin: theme.spacing(3, 0, 2),
-  }
-}))
+  },
+}));
 
 export default formStyles;
