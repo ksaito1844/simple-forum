@@ -18,13 +18,13 @@ const BlogView = ({ blog, user }) => {
       likes: blog.likes,
       author: blog.author,
       title: blog.title,
-      url: blog.url,
+      post: blog.post,
       _id: blog.id,
     };
     dispatch(likeBlog(likedBlog));
   };
 
-  const remove = () => {
+  const remove = async () => {
     if (blog.user.id !== user.id) {
       dispatch(
         changeNotification(
@@ -41,20 +41,24 @@ const BlogView = ({ blog, user }) => {
         user: blog.user.id,
         author: blog.author,
         title: blog.title,
-        url: blog.url,
+        post: blog.post,
         _id: blog.id,
       };
-      history.push('/');
       dispatch(deleteBlog(blogObject));
+      history.push('/');
     }
   };
 
   return (
     <div>
-      <h1>{blog.title}</h1>
-      <p>
-        <a href={blog.url}>{blog.url}</a>
-      </p>
+      <span>
+        <h1>{blog.title}</h1>
+        <p>
+          posted by <Link to={`/users/${blog.user.id}`}>{blog.author}</Link> at{' '}
+          {howLongAgo}
+        </p>
+      </span>
+      <p>{blog.post}</p>
       <br />
       <p>
         Likes: {blog.likes}
@@ -62,19 +66,10 @@ const BlogView = ({ blog, user }) => {
           like
         </button>
       </p>
-      <p>
-        added by <Link to={`/users/${blog.user.id}`}>{blog.author}</Link> at{' '}
-        {howLongAgo}
-      </p>
+      <p />
       <button onClick={remove} type="button">
         delete
       </button>
-      <hr />
-      <div>
-        <h3>{blog.title}</h3>
-        <br />
-        <p>This is the blog's content.</p>
-      </div>
       <Comments blog={blog} />
     </div>
   );

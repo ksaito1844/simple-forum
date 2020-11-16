@@ -15,6 +15,7 @@ const blogReducer = (state = [], action) => {
         ...blogToLike,
         likes: action.data.likes,
       };
+      console.log(blogToLike === likedBlog);
       return state.map((blog) => (blog.id !== idToLike ? blog : likedBlog));
     }
     case 'COMMENT': {

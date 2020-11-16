@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export const sortItemsDefault = (itemsToSort) =>
+export const sortItemsDefault = (itemsToSort = []) =>
   [...itemsToSort].sort((a, b) =>
     moment(b.createdAt, 'YYYY-MM-DD HH:mm:ss').diff(
       a.createdAt,
@@ -8,6 +8,8 @@ export const sortItemsDefault = (itemsToSort) =>
     )
   );
 
-export const sortItemsByLikes = (itemsToSort) => {
+export const sortItemsByLikes = (itemsToSort = []) =>
   [...itemsToSort].sort((a, b) => b.likes - a.likes);
-};
+
+export const sortItemsByComments = (itemsToSort = []) =>
+  [...itemsToSort].sort((a, b) => b.comments.length - a.comments.length);

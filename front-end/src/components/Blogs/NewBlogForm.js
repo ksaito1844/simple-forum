@@ -11,33 +11,33 @@ import { changeNotification } from '../../reducers/notificationReducer';
 import formStyles from '../common/formStyles';
 
 const NewBlogForm = ({ user }) => {
-  const [newBlog, setNewBlog] = useState({ title: '', url: '' });
+  const [newBlog, setNewBlog] = useState({ title: '', post: '' });
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = formStyles();
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     const date = moment().format('YYYY-MM-DD HH:mm:ss');
     event.preventDefault();
     const newBlogObject = {
       title: newBlog.title,
-      url: newBlog.url,
+      post: newBlog.post,
       author: user,
       createdAt: date,
     };
-    await dispatch(createBlog(newBlogObject));
+    dispatch(createBlog(newBlogObject));
     dispatch(
       changeNotification(
         `Your new blog titled: "${newBlogObject.title}" has been added to the server!`,
         3000
       )
     );
+    setNewBlog({ title: '', post: '' });
     history.push(`/blogs`);
-    setNewBlog({ title: '', url: '' });
   };
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="sm">
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
           New Post
@@ -64,13 +64,16 @@ const NewBlogForm = ({ user }) => {
             margin="normal"
             required
             fullWidth
-            id="url"
-            placeholder="Url"
+            id="post"
+            placeholder="Say something wonderful!"
             type="text"
-            value={newBlog.url}
-            name="Url"
+            value={newBlog.post}
+            name="Post"
+            multiline
+            rows={10}
+            size="medium"
             onChange={({ target }) =>
-              setNewBlog((newBlog) => ({ ...newBlog, url: target.value }))
+              setNewBlog((newBlog) => ({ ...newBlog, post: target.value }))
             }
             autoComplete="on"
           />

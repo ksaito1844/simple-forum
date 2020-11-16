@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import makeStyles from '@material-ui/styles/makeStyles';
+import React, { useState } from 'react';
+import { connect, useDispatch } from 'react-redux';
+import { makeStyles } from '@material-ui/styles';
 import moment from 'moment';
-import { addComment, initializeBlogs } from '../../reducers/blogReducer';
+import { addComment } from '../../reducers/blogReducer';
 import { changeNotification } from '../../reducers/notificationReducer';
 
 const commentStyles = makeStyles((theme) => ({

@@ -4,7 +4,6 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import { logoutUser } from '../../reducers/userReducer';
@@ -27,7 +26,7 @@ const NavBar = () => {
       <Toolbar>
         <Typography variant="h5" className={classes.title}>
           <Link color="secondary" to="/" className={classes.navItem}>
-            Blogs
+            Posts
           </Link>
           <Link color="secondary" to="/users" className={classes.navItem}>
             Users

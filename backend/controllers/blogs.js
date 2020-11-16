@@ -28,13 +28,13 @@ blogsRouter.post('/', async (req, res) => {
   const blog = new Blog({
     title: body.title,
     author: body.author.name,
-    url: body.url,
+    post: body.post,
     user: user._id,
     createdAt: body.createdAt
   })
   console.log(blog)
 
-  if (!blog.title || !blog.url)
+  if (!blog.title || !blog.post)
     return res.status(400).json({ error: 'Bad Request' })
 
   const savedBlog = await blog.save()
@@ -76,7 +76,7 @@ blogsRouter.put('/:id', async (req, res) => {
   const blog = {
     title: contents.title,
     author: contents.author,
-    url: contents.url,
+    post: contents.post,
     likes: contents.likes + 1,
   }
   for (let prop in blog) if (!blog[prop]) delete blog[prop]

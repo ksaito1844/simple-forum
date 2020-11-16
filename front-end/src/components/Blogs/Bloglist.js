@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import moment from 'moment';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { blogListStyles } from './BlogListStyles';
-import { sortItemsDefault } from '../../utils/sortItems';
+import {
+  sortItemsByComments,
+  sortItemsByLikes,
+  sortItemsDefault,
+} from '../../utils/sortItems';
+import { SortBar } from '../common/SortBar/SortBar';
 
 export const Blog = ({ blog }) => {
   const classes = blogListStyles();
@@ -24,11 +29,23 @@ export const Blog = ({ blog }) => {
   );
 };
 
-const Bloglist = ({ blogs }) => {
-  const [sortMethod, setSorthMethod] = useState(sortItemsDefault(blogs));
-  console.log(blogs);
+const Bloglist = () => {
+  const blogs = useSelector((state) => state.blogs);
+  const [sortMethod, setSortMethod] = useState('recent');
   const classes = blogListStyles();
   const history = useHistory();
+
+  const sortedBlogs = useMemo(() => {
+    if (sortMethod === 'likes') {
+      return sortItemsByLikes(blogs);
+    }
+    if (sortMethod === 'comments') {
+      return sortItemsByComments(blogs);
+    }
+    return sortItemsDefault(blogs);
+  }, [blogs, sortMethod]);
+
+  console.log(sortedBlogs);
 
   return (
     <div>
@@ -46,15 +63,12 @@ const Bloglist = ({ blogs }) => {
           onFocus={() => history.push('/create')}
         />
       </Box>
-      {sortMethod.map((blog) => (
+      <SortBar setState={setSortMethod} />
+      {sortedBlogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  blogs: state.blogs,
-});
-
-export default connect(mapStateToProps)(Bloglist);
+export default Bloglist;
