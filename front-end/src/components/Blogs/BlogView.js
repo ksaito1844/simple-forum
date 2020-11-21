@@ -1,31 +1,34 @@
 import React from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import moment from 'moment';
-import { deleteBlog, likeBlog } from '../../reducers/blogReducer';
 import { changeNotification } from '../../reducers/notificationReducer';
 import Comments from './Comments';
+import {
+  likePost,
+  removePost,
+  selectPostById,
+} from '../../reducers/postsSlice';
 
-const BlogView = ({ blog, user }) => {
+const BlogView = ({ user, match }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const howLongAgo = moment(blog.createdAt, 'YYYY-MM-DD HH:mm:ss').fromNow();
+  const postId = match.params.id;
+  const blog = useSelector((state) => selectPostById(state, postId));
 
   const like = () => {
     const likedBlog = {
-      user: blog.user.id,
-      likes: blog.likes,
-      author: blog.author,
-      title: blog.title,
-      post: blog.post,
       _id: blog.id,
+      likes: blog.likes,
     };
-    dispatch(likeBlog(likedBlog));
+    dispatch(likePost(likedBlog));
   };
+
+  console.log(blog);
 
   const remove = async () => {
     if (blog.user.id !== user.id) {
+      console.log(user.id);
+      console.log(blog);
       dispatch(
         changeNotification(
           `You are not authorized to delete this post`,
@@ -38,13 +41,9 @@ const BlogView = ({ blog, user }) => {
 
     if (window.confirm(`Do you really want to delete "${blog.title}"?`)) {
       const blogObject = {
-        user: blog.user.id,
-        author: blog.author,
-        title: blog.title,
-        post: blog.post,
-        _id: blog.id,
+        id: blog.id,
       };
-      dispatch(deleteBlog(blogObject));
+      dispatch(removePost(blogObject));
       history.push('/');
     }
   };
@@ -55,7 +54,6 @@ const BlogView = ({ blog, user }) => {
         <h1>{blog.title}</h1>
         <p>
           posted by <Link to={`/users/${blog.user.id}`}>{blog.author}</Link> at{' '}
-          {howLongAgo}
         </p>
       </span>
       <p>{blog.post}</p>
@@ -70,7 +68,7 @@ const BlogView = ({ blog, user }) => {
       <button onClick={remove} type="button">
         delete
       </button>
-      <Comments blog={blog} />
+      <Comments blogId={blog.id} blogComments={blog.comments} />
     </div>
   );
 };

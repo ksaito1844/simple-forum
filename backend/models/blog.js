@@ -16,7 +16,7 @@ const blogSchema = new mongoose.Schema({
       ref: 'Comment',
     }
   ],
-  createdAt: String,
+  date: String,
 })
 
 blogSchema.plugin(toJson)

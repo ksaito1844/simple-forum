@@ -4,11 +4,14 @@ import { IconButton } from '@material-ui/core';
 import NewReleasesIcon from '@material-ui/icons/NewReleases';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import WhatshotIcon from '@material-ui/icons/Whatshot';
+import { useDispatch } from 'react-redux';
 import { sortBarStyles } from './SortBarStyles';
+import { sortPostsByLikes } from '../../../reducers/postsSlice';
 
 export const SortBar = ({ setState }) => {
   const [activeButton, setActiveButton] = useState('recent');
   const classes = sortBarStyles();
+  const dispatch = useDispatch();
 
   const sortItems = (operation) => {
     if (operation === 'sortItemsByComments') {

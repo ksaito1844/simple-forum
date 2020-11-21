@@ -14,9 +14,8 @@ const getAll = async () => {
 };
 
 const getComments = async (blogId) => {
-  const url = `${baseUrl}/${blogId}`;
+  const url = `${baseUrl}/${blogId}/comments`;
   const response = await axios.get(url);
-  console.log(response);
   return response.data;
 };
 
@@ -48,7 +47,7 @@ const remove = async (newObject) => {
     headers: { Authorization: token },
   };
   console.log(newObject);
-  const url = `${baseUrl}/${newObject._id}`;
+  const url = `${baseUrl}/${newObject.id}`;
   const response = await axios.delete(url, config);
   return response.data;
 };

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import moment from 'moment';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import { Container } from '@material-ui/core';
-import { createBlog } from '../../reducers/blogReducer';
+import { addNewPost } from '../../reducers/postsSlice';
 import { changeNotification } from '../../reducers/notificationReducer';
 import formStyles from '../common/formStyles';
 
@@ -17,15 +16,13 @@ const NewBlogForm = ({ user }) => {
   const classes = formStyles();
 
   const handleSubmit = (event) => {
-    const date = moment().format('YYYY-MM-DD HH:mm:ss');
     event.preventDefault();
     const newBlogObject = {
       title: newBlog.title,
       post: newBlog.post,
       author: user,
-      createdAt: date,
     };
-    dispatch(createBlog(newBlogObject));
+    dispatch(addNewPost(newBlogObject));
     dispatch(
       changeNotification(
         `Your new blog titled: "${newBlogObject.title}" has been added to the server!`,
@@ -33,7 +30,8 @@ const NewBlogForm = ({ user }) => {
       )
     );
     setNewBlog({ title: '', post: '' });
-    history.push(`/blogs`);
+    console.log(user);
+    history.push(`/`);
   };
 
   return (

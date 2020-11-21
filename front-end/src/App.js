@@ -7,7 +7,7 @@ import blogService from './services/blogs';
 import Bloglist from './components/Blogs/Bloglist';
 import Notification from './components/Notification';
 import NewBlogForm from './components/Blogs/NewBlogForm';
-import { initializeBlogs } from './reducers/blogReducer';
+import { fetchPosts } from './reducers/postsSlice';
 import UsersView from './components/UsersView/UsersView';
 import UserProfile from './components/UserProfile/UserProfile';
 import { initializeUsers } from './reducers/usersReducer';
@@ -20,11 +20,11 @@ import { alreadyLoggedIn } from './reducers/userReducer';
 const App = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const blogs = useSelector((state) => state.blogs);
+  const blogs = useSelector((state) => Object.values(state.posts.entities));
   const users = useSelector((state) => state.users);
 
   useEffect(() => {
-    dispatch(initializeBlogs());
+    dispatch(fetchPosts());
   }, [dispatch]);
 
   useEffect(() => {
@@ -82,9 +82,7 @@ const App = () => {
           <NavBar />
           <div className={classes.marginDiv}>
             <Switch>
-              <Route path="/blogs/:id">
-                <BlogView blog={searchedBlog} />
-              </Route>
+              <Route exact path="/blogs/:id" component={BlogView} />
               <Route path="/users/:id">
                 <UserProfile user={searchedUser} />
               </Route>
@@ -97,9 +95,7 @@ const App = () => {
               <Route path="/register">
                 <RegisterForm />
               </Route>
-              <Route path="/">
-                <Bloglist />
-              </Route>
+              <Route exact path="/" component={Bloglist} />
             </Switch>
           </div>
         </Container>

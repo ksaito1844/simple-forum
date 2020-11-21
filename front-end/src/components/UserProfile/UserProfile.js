@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Blog } from '../Blogs/Bloglist';
+import SingleBlog from '../Blogs/SingleBlog';
 
 const UserProfile = ({ user }) => {
   const blogs = useSelector((state) => state.blogs);
@@ -23,7 +23,7 @@ const UserProfile = ({ user }) => {
         <ul>
           {usersBlogs.map((blog) => (
             <li key={blog.id}>
-              <Blog blog={blog} />
+              <SingleBlog blog={blog} />
             </li>
           ))}
         </ul>

@@ -1,33 +1,31 @@
-import React, { useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/styles';
-import moment from 'moment';
-import { addComment } from '../../reducers/blogReducer';
+import React, { useEffect, useState } from 'react';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { changeNotification } from '../../reducers/notificationReducer';
+import {
+  addComment,
+  fetchComments,
+  selectCommentsByPost,
+} from '../../reducers/commentsSlice';
+import SingleComment from './SingleComment';
 
-const commentStyles = makeStyles((theme) => ({
-  comment: {
-    marginLeft: 16,
-  },
-  author: {
-    fontSize: 14,
-    '& span': {
-      color: theme.palette.grey.main,
-    },
-  },
-}));
-
-const Comments = ({ blog, user }) => {
+const Comments = ({ blogId, blogComments, user }) => {
   const [comment, setComment] = useState('');
   const dispatch = useDispatch();
-  const classes = commentStyles();
 
-  const createComment = (event, blogId) => {
+  useEffect(() => {
+    dispatch(fetchComments(blogId));
+  }, [blogId, dispatch]);
+
+  const comments = useSelector((state) =>
+    selectCommentsByPost(state, blogComments)
+  );
+
+  const createComment = (event, postId) => {
     event.preventDefault();
-    const date = moment().format('YYYY-MM-DD HH:mm:ss');
-    const newComment = { content: comment, user: user.id, createdAt: date };
-    dispatch(addComment(newComment, blogId));
+    const newComment = { content: comment, user: user.id };
+    dispatch(addComment({ postId, newComment }));
     dispatch(changeNotification(`Your comment has been added`, 3000));
+    setComment('');
   };
 
   return (
@@ -35,7 +33,7 @@ const Comments = ({ blog, user }) => {
       <h3>Comments:</h3>
       <form
         onSubmit={(event) => {
-          createComment(event, blog.id);
+          createComment(event, blogId);
         }}
       >
         <input
@@ -47,18 +45,7 @@ const Comments = ({ blog, user }) => {
         <button type="submit">add comment</button>
       </form>
       <hr />
-      {blog.comments.map((c, i) => (
-        <div
-          style={{ borderBottom: '1px solid black', marginBottom: '1em' }}
-          key={i}
-          className={classes.comment}
-        >
-          <p className={classes.author}>
-            {c.author} <span>{moment(c.createdAt).fromNow()}</span>
-          </p>
-          <p>{c.content}</p>
-        </div>
-      ))}
+      {comments && comments.map((c) => <SingleComment key={c} commentId={c} />)}
     </div>
   );
 };

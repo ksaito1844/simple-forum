@@ -6,15 +6,15 @@ const Comment = require('../models/comment')
 
 blogsRouter.get('/', async (req, res) => {
   const blogs = await Blog.find({})
-    .populate('user', { username: 1, name: 1 })
-    .populate('comments')
+    .populate('user', {id: 1})
+    .populate('comments', {id: 1})
   res.json(blogs)
 })
 
-blogsRouter.get('/:id', async (req, res) => {
+blogsRouter.get('/:id/comments', async (req, res) => {
   const blogs = await Blog.find({}).populate('comments')
   const returnBlog = blogs.filter(b => b.id === req.params.id)
-  res.json(returnBlog)
+  res.json(returnBlog[0].comments)
 })
 
 blogsRouter.post('/', async (req, res) => {
@@ -30,9 +30,8 @@ blogsRouter.post('/', async (req, res) => {
     author: body.author.name,
     post: body.post,
     user: user._id,
-    createdAt: body.createdAt
+    date: new Date().toISOString()
   })
-  console.log(blog)
 
   if (!blog.title || !blog.post)
     return res.status(400).json({ error: 'Bad Request' })
@@ -53,7 +52,7 @@ blogsRouter.post('/:id/comments', async (req, res) => {
     author: user.username,
     user: user._id,
     content: content,
-    createdAt: body.createdAt,
+    date: new Date().toISOString()
   })
 
   const savedComment = await comment.save()
@@ -64,23 +63,23 @@ blogsRouter.post('/:id/comments', async (req, res) => {
   user.comments = user.comments.concat(savedComment._id)
   await user.save()
 
-  const blogs = await Blog.find({}).populate('comments')
-  const returnBlog = await blogs.filter(b => b.id === req.params.id)
-  console.log(returnBlog)
-  res.json(returnBlog)
+  // const blogs = await Blog.find({}).populate('comments')
+  // const returnBlog = await blogs.filter(b => b.id === req.params.id)
+
+  res.json(savedComment)
 })
 
 blogsRouter.put('/:id', async (req, res) => {
   const contents = await req.body
 
-  const blog = {
-    title: contents.title,
-    author: contents.author,
-    post: contents.post,
-    likes: contents.likes + 1,
-  }
-  for (let prop in blog) if (!blog[prop]) delete blog[prop]
-  const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blog, { new: true })
+
+  // for (let prop in blog) if (!blog[prop]) delete blog[prop]
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    req.params.id,
+    {$inc:
+        {"likes": +1} },
+    { new: true })
+
   res.json(updatedBlog.toJSON())
 })
 
