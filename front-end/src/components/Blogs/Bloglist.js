@@ -12,11 +12,8 @@ const Bloglist = () => {
   const [sortMethod, setSortMethod] = useState('recent');
   const classes = blogListStyles();
   const history = useHistory();
-  const posts = useSelector(selectPostIds);
 
   const sortedPosts = useSelector((state) => sortPosts(state, sortMethod));
-
-  console.log(sortedPosts);
 
   return (
     <div>

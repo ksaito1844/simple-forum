@@ -25,7 +25,6 @@ export const addNewPost = createAsyncThunk(
   'posts/addNewPost',
   async (newPost) => {
     const response = blogService.create(newPost);
-    console.log(response);
     return response;
   }
 );

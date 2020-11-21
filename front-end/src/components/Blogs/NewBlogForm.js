@@ -30,7 +30,6 @@ const NewBlogForm = ({ user }) => {
       )
     );
     setNewBlog({ title: '', post: '' });
-    console.log(user);
     history.push(`/`);
   };
 

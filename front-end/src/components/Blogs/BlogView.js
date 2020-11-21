@@ -23,8 +23,6 @@ const BlogView = ({ user, match }) => {
     dispatch(likePost(likedBlog));
   };
 
-  console.log(blog);
-
   const remove = async () => {
     if (blog.user.id !== user.id) {
       console.log(user.id);
