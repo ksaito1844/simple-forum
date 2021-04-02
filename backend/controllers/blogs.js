@@ -8,6 +8,7 @@ blogsRouter.get('/', async (req, res) => {
   const blogs = await Blog.find({})
     .populate('user', {id: 1})
     .populate('comments', {id: 1})
+
   res.json(blogs)
 })
 
