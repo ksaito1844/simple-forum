@@ -35,9 +35,8 @@ if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/testing')
   app.use('/api/testing', testingRouter)
 }
-app.get('*', (req,res) =>{
-  console.log('Hey, Joey!')
-  res.sendFile(path.join(__dirname+'/build/index.html'));
+app.get('/*', (req,res) =>{
+  res.sendFile(path.join(__dirname + '/build/index.html'));
 });
 
 app.use(middleware.unknownEndpoint)
