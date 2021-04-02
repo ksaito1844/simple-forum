@@ -30,12 +30,15 @@ app.use('/api/login', loginRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/blogs', blogsRouter)
 app.use('/api/comments', commentsRouter)
-app.get('/*', express.static('build'))
 
 if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/testing')
   app.use('/api/testing', testingRouter)
 }
+app.get('*', (req,res) =>{
+  console.log('Hey, Joey!')
+  res.sendFile(path.join(__dirname+'/build/index.html'));
+});
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
