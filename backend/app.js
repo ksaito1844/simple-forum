@@ -36,7 +36,7 @@ if (process.env.NODE_ENV === 'test') {
   app.use('/api/testing', testingRouter)
 }
 app.get('/*', (req,res) =>{
-  res.sendFile(path.join(__dirname + '/backend/build/index.html'));
+  res.send('Hello World!')
 });
 
 app.use(middleware.unknownEndpoint)
