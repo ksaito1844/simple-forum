@@ -22,11 +22,9 @@ const BlogView = ({ user, match }) => {
     };
     dispatch(likePost(likedBlog));
   };
-
+  
   const remove = async () => {
     if (blog.user.id !== user.id) {
-      console.log(user.id);
-      console.log(blog);
       dispatch(
         changeNotification(
           `You are not authorized to delete this post`,
@@ -58,9 +56,11 @@ const BlogView = ({ user, match }) => {
       <br />
       <p>
         Likes: {blog.likes}
+        {user.id !== blog.user.id && 
         <button onClick={like} type="button">
           like
         </button>
+        }
       </p>
       <p />
       <button onClick={remove} type="button">

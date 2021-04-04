@@ -1,10 +1,8 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import SingleBlog from '../Blogs/SingleBlog';
 
 const UserProfile = ({ user }) => {
-  const blogs = useSelector((state) => state.blogs);
-  const usersBlogs = blogs.filter((b) => b.author === user.name);
+  const usersBlogs = user ? user.blogs : [];
 
   return (
     <div>
@@ -21,11 +19,16 @@ const UserProfile = ({ user }) => {
         <h4>Blog Posts:</h4>
         <br />
         <ul>
-          {usersBlogs.map((blog) => (
-            <li key={blog.id}>
-              <SingleBlog blog={blog} />
-            </li>
-          ))}
+          {usersBlogs.length !== 0 
+            ? usersBlogs.map((blog) => (
+              <li key={blog.id}>
+                <SingleBlog blogId={blog.id} />
+              </li>
+            ))
+            : (
+              <li>{user.name} doesn't have any blog posts yet.</li>
+            )
+        }
         </ul>
       </div>
     </div>
